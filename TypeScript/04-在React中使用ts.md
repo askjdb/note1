@@ -209,9 +209,9 @@ type IProps = { name: string; age: number; };
 复制代码
 ```
 
-如果使用箭头函数定义的函数组件，直接这样调用时错误的：
+如果使用箭头函数定义的函数组件，直接这样调用是错误的：
 
-```typescript
+```tsx
 const MyComponent = <P>(props: P) {
   return (
   	<span>
@@ -219,12 +219,11 @@ const MyComponent = <P>(props: P) {
     </span>
   );
 }
-复制代码
 ```
 
 必须使用extends关键字来定义泛型参数才能被成功解析：
 
-```typescript
+```tsx
 const MyComponent = <P extends any>(props: P) {
   return (
   	<span>
@@ -232,7 +231,6 @@ const MyComponent = <P extends any>(props: P) {
     </span>
   );
 }
-复制代码
 ```
 
 ## 二、React内置类型
