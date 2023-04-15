@@ -10,7 +10,7 @@ dispatch一个action之后，到达reducer之前，进行一些额外的操作�
 
 ### 2.中间件的用法
 
-```javascript
+```js
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
@@ -18,7 +18,6 @@ const store = createStore(
     reducers, 
     applyMiddleware(thunk)
 );
-复制代
 ```
 
 直接将thunk中间件引入，放在applyMiddleware方法之中，传入createStore方法，就完成了store.dispatch()的功能增强。即可以在reducer中进行一些异步的操作。
@@ -31,7 +30,7 @@ const store = createStore(
 const store = createStore(
     reducers, 
     applyMiddleware(thunk, logger)
-);
+)
 ```
 
 如果想了解它的演化过程可以去redux的官方文档：https://redux.js.org/advanced/middleware

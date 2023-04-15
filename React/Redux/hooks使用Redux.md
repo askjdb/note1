@@ -69,7 +69,7 @@ export const reducer = (state=initState,action)=>{
 
 ### /index.js
 
-```js
+```jsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {BrowserRouter} from 'react-router-dom'
@@ -101,7 +101,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
 #### /components/login/index.jsx
 
-```js
+```jsx
 import React, { useEffect } from 'react'
 import {useSelector,useDispatch} from 'react-redux'	// 通过useSelector(callback)获取store数据
 // 登录页面组件

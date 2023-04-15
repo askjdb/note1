@@ -3,6 +3,8 @@
 ## 一.源码
 
 ```js
+const { resolve, reject } = require("promise")
+
 class Promise {
 
     constructor(concenters) {
@@ -68,9 +70,8 @@ class Promise {
                 return reason
             }
         }
-        const self = this;//b
+        const self = this;
         let Promise2 = new Promise((resolve, reject) => {
-            //then是微任务，所以ResolvePromise要异步执行
             var ResolvePromise = (x) => {
                 setTimeout(() => {
                     try {
@@ -92,7 +93,9 @@ class Promise {
                     }
                 })
             }
-            if (self.state === 'fulfilled') { 
+            if (self.state === 'fulfilled') {
+                //这里加入setTimeout是为了实现Promise在样例里的异步调用
+                
                 setTimeout(() => {
                     ResolvePromise(onFulfilled(self.value))
                 })
@@ -111,6 +114,73 @@ class Promise {
         })
         return Promise2
     }
+
+
+    static all(promises){
+        return new Promise((resolve, reject)=>{
+            let result=[];
+            let count=0;
+            const addPromise=(index,value)=>{
+                result[index]=value
+                count++
+                if(count===promises.length){
+                    resolve(result)
+                }
+            }
+            promises.forEach((promise,index)=>{
+                if(promise instanceof Promise){
+                    promise.then((val)=>{
+                        addPromise(index,val)
+                    },(err)=>{
+                        reject(err)
+                    })
+                }
+                else{
+                    addPromise(index,promise)
+                }
+            })
+        })
+    }
+
+
+    static race(promises){
+        return new Promise((resolve,reject)=>{
+            promises.forEach((promise)=>{
+                if(promise instanceof Promise){
+                    promise.then(val=>{
+                        resolve(val)
+                    },err=>{
+                        reject(err)
+                    })
+                }
+                else{
+                    resolve(promise)
+                }
+            })
+        })
+    }
+
+    static any(promises){
+        return new Promise((resolve,reject)=>{
+            let count=0;
+            promises.forEach((promise)=>{
+                if(promise  instanceof Promise){
+                    promise.then(val=>{
+                        resolve(val)
+                    },err=>{
+                        count++;
+                        if(count===promises.length){
+                            reject(err)
+                        }
+                    })
+                }
+                else{
+                    resolve(promise)
+                }
+            })
+        })
+    }
+
 }
 
 module.exports = Promise
@@ -207,3 +277,90 @@ if (self.state === 'padding') {
 将这三个函数放在这里是为了Promise2内部的ResolvePromise函数可以得到onFulfilled/onRejected函数的返回值，根据这个返回值，
 
 修改Promsie2的状态，self等于调用then的Promise实例
+
+## 三.其他方法
+
+### all
+
++ 接收一个数组，数组中如有非Promise项，则此项当做成功
+
++ 如果所有Promise都成功，则返回成功结果数组
+
++ 如果有一个Promise失败，则返回这个失败结果
+
+```js
+    static all(promises) {
+        const result = []
+        let count = 0
+        return new Promise((resolve, reject) => {
+            const addData = (index, value) => {
+                result[index] = value
+                count++
+                if (count === promises.length) resolve(result)
+            }
+            promises.forEach((promise, index) => {
+                if (promise instanceof Promise) {
+                    promise.then(res => {
+                        addData(index, res)
+                    }, err => reject(err))
+                } else {
+                    addData(index, promise)
+                }
+            })
+        })
+    }
+```
+
+### **race**
+
+接收一个Promise数组，数组中如有非Promise项，则此项当作成功.
+
+哪个Promise最快得到结果，就返回哪个结果，无论成功失败.
+
+```js
+    static race(promises) {
+        return new Promise((resolve, reject) => {
+            promises.forEach(promise => {
+                if (promise instanceof MyPromise) {
+                    promise.then(res => {
+                        resolve(res)
+                    }, err => {
+                        reject(err)
+                    })
+                } else {
+                    resolve(promise)
+                }
+            })
+        })
+    }
+```
+
+**any**
+
+any与all相反
+
+接收一个Promise数组，数组中如有非Promise项，则此项当作成功.
+
+如果有一个Promise成功，则饭返回这个成功结果.
+
+如果所有Promise都失败，则报错
+
+```js
+    static any(promises) {
+        return new Promise((resolve, reject) => {
+            let count = 0
+            promises.forEach((promise) => {
+                promise.then(val => {
+                    resolve(val)
+                }, err => {
+                    count++
+                    if (count === promises.length) {
+                        reject(new AggregateError('All promises were rejected'))
+                    }
+                })
+            })
+        })
+    }
+}
+```
+

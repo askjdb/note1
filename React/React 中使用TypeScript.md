@@ -47,18 +47,17 @@ class App extends React.PureComponent<IProps, IState> {}
 
 有时候可能会见到这种写法，实际上和上面的效果是一样的：
 
-```typescript
+```tsx
 import React, {PureComponent, Component} from "react";
 
 class App extends PureComponent<IProps, IState> {}
 
 class App extends Component<IProps, IState> {}
-复制代码
 ```
 
 那如果定义时候我们不知道组件的props的类型，只有在调用时才知道组件类型，该怎么办呢？这时泛型就发挥作用了：
 
-```typescript
+```tsx
 // 定义组件
 class MyComponent<P> extends React.Component<P> {
   internalProp: P;
@@ -78,14 +77,13 @@ type IProps = { name: string; age: number; };
 
 <MyComponent<IProps> name="React" age={18} />;          // Success
 <MyComponent<IProps> name="TypeScript" age="hello" />;  // Error
-复制代码
 ```
 
 ### 2. 函数组件
 
 通常情况下，函数组件我是这样写的：
 
-```typescript
+```tsx
 interface IProps {
   name: string
 }
@@ -102,19 +100,17 @@ const App = (props: IProps) => {
 }
 
 export default App;
-复制代码
 ```
 
 除此之外，函数类型还可以使用`React.FunctionComponent<P={}>`来定义，也可以使用其简写`React.FC<P={}>`，两者效果是一样的。它是一个泛型接口，可以接收一个参数，参数表示props的类型，这个参数不是必须的。它们就相当于这样：
 
-```typescript
+```tsx
 type React.FC<P = {}> = React.FunctionComponent<P>
-复制代码
 ```
 
 最终的定义形式如下：
 
-```typescript
+```tsx
 interface IProps {
   name: string
 }
@@ -130,12 +126,11 @@ const App: React.FC<IProps> = (props) => {
 }
 
 export default App;
-复制代码
 ```
 
 当使用这种形式来定义函数组件时，props中默认会带有children属性，它表示该组件在调用时，其内部的元素，来看一个例子，首先定义一个组件，组件中引入了Child1和Child2组件：
 
-```typescript
+```tsx
 import Child1 from "./child1";
 import Child2 from "./child2";
 
@@ -153,7 +148,6 @@ const App: React.FC<IProps> = (props) => {
 };
 
 export default App;
-复制代码
 ```
 
 Child1组件结构如下：
@@ -189,7 +183,7 @@ export default Child1;
 
 那如果我们在定义组件时不知道props的类型，只有调用时才知道，那就还是用泛型来定义props的类型。对于使用function定义的函数组件：
 
-```typescript
+```tsx
 // 定义组件
 function MyComponent<P>(props: P) {
   return (
@@ -204,12 +198,11 @@ type IProps = { name: string; age: number; };
 
 <MyComponent<IProps> name="React" age={18} />;          // Success
 <MyComponent<IProps> name="TypeScript" age="hello" />;  // Error
-复制代码
 ```
 
 如果使用箭头函数定义的函数组件，直接这样调用时错误的：
 
-```typescript
+```tsx
 const MyComponent = <P>(props: P) {
   return (
   	<span>
@@ -217,12 +210,11 @@ const MyComponent = <P>(props: P) {
     </span>
   );
 }
-复制代码
 ```
 
 必须使用extends关键字来定义泛型参数才能被成功解析：
 
-```typescript
+```tsx
 const MyComponent = <P extends any>(props: P) {
   return (
   	<span>
@@ -285,7 +277,6 @@ type ReactChild = ReactElement | ReactText;
 interface ReactNodeArray extends Array<ReactNode> {}
 type ReactFragment = {} | ReactNodeArray;
 type ReactNode = ReactChild | ReactFragment | ReactPortal | boolean | null | undefined;
-复制代码
 ```
 
 可以看到，ReactNode是一个联合类型，它可以是string、number、ReactElement、null、boolean、ReactNodeArray。由此可知。ReactElement类型的变量可以直接赋值给ReactNode类型的变量，但反过来是不行的。
@@ -302,7 +293,6 @@ class MyComponent extends React.Component {
 const component: React.ReactNode<MyComponent> = <MyComponent />;
 // 错误
 const component: React.ReactNode<MyComponent> = <OtherComponent />;
-复制代码
 ```
 
 上面的代码中，给component变量设置了类型是Mycomponent类型的react实例，这时只能给其赋值其为MyComponent的实例组件。 
@@ -383,23 +373,21 @@ style?: CSSProperties | undefined;
 
 如果已知state 的类型，可以通过以下形式来自定义state的类型：
 
-```typescript
+```tsx
 const [count, setCount] = useState<number>(1)
-复制代码
 ```
 
 如果初始值为null，需要显式地声明 state 的类型：
 
 ```typescript
 const [count, setCount] = useState<number | null>(null); 
-复制代码
 ```
 
 如果state是一个对象，想要初始化一个空对象，可以使用断言来处理：
 
 ```typescript
 const [user, setUser] = React.useState<IUser>({} as IUser);
-复制代码
+
 ```
 
 实际上，这里将空对象{}断言为IUser接口就是欺骗了TypeScript的编译器，由于后面的代码可能会依赖这个对象，所以应该在使用前及时初始化 user 的值，否则就会报错。
