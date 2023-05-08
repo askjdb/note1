@@ -85,7 +85,6 @@ CSS 实现方式
 overflow: hidden;
 text-overflow:ellipsis;
 white-space: nowrap;
-复制代码
 ```
 
 多行：
@@ -108,7 +107,7 @@ background: -o-linear-gradient(right, transparent, #fff 55%);
 background: -moz-linear-gradient(right, transparent, #fff 55%);
 background: linear-gradient(to right, transparent, #fff 55%);
 }
-复制代码
+
 ```
 
 JS 实现方式：

@@ -8,12 +8,11 @@
 
 ### reducer
 
-```perl
+```js
 useState - state
 useEffect - side effects
 useContext - context API
 useReducer - reducers
-复制代码
 ```
 
 可以看到 useReducer 一定也与 reducer 有关，接下来看看什么是 reducer。之所以要了解什么是 reducer 是为了你不需要掌握 redux 而学会 useReducer，当然，如果你了解Redux，对本章理解会更容易。下面开始

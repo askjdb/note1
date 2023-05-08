@@ -173,7 +173,7 @@ import { UserContext } from '../App'
 
 使用 Consumer 进行消费
 
-```javascript
+```jsx
 <UserContext.Consumer>
   {
     (user) => (
@@ -321,7 +321,6 @@ function ComponentE() {
 }
 
 export default ComponentE
-复制代码
 ```
 
 页面展示如下
@@ -332,7 +331,6 @@ export default ComponentE
 
 ```js
 const value = useContext(MyContext)
-复制代码
 ```
 
 > useContext 方法接收一个 context 对象（`React.createContext` 的返回值）并返回该 context 的当前值。当前的 context 值由上层组件中距离当前组件最近的 `<MyContext.Provider>` 的 `value` prop 决定。
@@ -355,7 +353,7 @@ const value = useContext(MyContext)
 
 ##### 函数组件：
 
-```typescript
+```tsx
 import React, { createContext, useState } from "react";
 
 // 创建context，约定数据类型，设置初始值
@@ -378,12 +376,11 @@ const ThemeProvide: React.FC<{
 };
 
 export default ThemeProvide
-复制代码
 ```
 
 ##### 类组件：
 
-```typescript
+```tsx
 import React, { createContext } from "react";
 
 // 创建context，约定数据类型，设置初始值
@@ -417,7 +414,6 @@ class ThemeProvide extends React.Component<Props,State>{
 }
 
 export default ThemeProvide;
-复制代码
 ```
 
 ### 代码讲解：
@@ -432,7 +428,7 @@ export default ThemeProvide;
 
 #### App.tsx文件代码：
 
-```typescript
+```tsx
 import React, { useContext } from "react"
 import ThemeContext, { ThemeCtx } from "./类式组件/ThemeContext"
 
@@ -468,7 +464,6 @@ export default function App() {
         </ThemeContext>
     );
 }
-复制代码
 ```
 
 ### 代码讲解：
@@ -480,7 +475,7 @@ export default function App() {
 
 #### 代码示例
 
-```typescript
+```tsx
 import { useState, useContext, createContext, useMemo } from "react";
 
 const ThemeCtx = createContext<{
@@ -538,7 +533,6 @@ export default function App() {
     </ThemeProvide>
   );
 }
-复制代码
 ```
 
 #### 讲解
@@ -549,7 +543,7 @@ react Context是发布订阅机制的数据共享，被Context.Provider包围住
 
 #### 代码
 
-```typescript
+```tsx
 import { useState, useContext, createContext, useMemo } from "react";
 
 const ColorCtx = createContext<{
@@ -639,8 +633,6 @@ export default function App() {
     </ColorProvide>
   );
 }
-
-复制代码
 ```
 
 #### 讲解
