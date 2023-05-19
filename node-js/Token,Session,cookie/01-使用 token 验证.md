@@ -44,14 +44,14 @@ app.use((req, res, next) => {
 })
 
 // 使用expressJWT 验证token是否过期
-app.use(expressJWT({
+app.use(expressJWT.expressjwt({
   secret: setting.token.signKey // 签名的密钥 或 PublicKey
 }).unless({ // 设置并规定哪些路由不用验证 token
   path: ['/api/hello'] // 指定路径不经过 Token 解析
 }));
 
 
-//当token失效返回提示信息 时间过期了执行这一条
+//当token失效返回提示信息 时间过期了执行这一条 要放在错误c
 app.use((err, req, res, next) => {
     // console.log(req);
   if (err.status === 401) {

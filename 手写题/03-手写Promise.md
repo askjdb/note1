@@ -95,7 +95,6 @@ class Promise {
             }
             if (self.state === 'fulfilled') {
                 //这里加入setTimeout是为了实现Promise在样例里的异步调用
-                
                 setTimeout(() => {
                     ResolvePromise(onFulfilled(self.value))
                 })

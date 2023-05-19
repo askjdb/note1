@@ -24,7 +24,7 @@ npm install express-jwt
 var expressJWT = require('express-jwt');
 
 var secretOrPrivateKey = "hello  BigManing"  //加密token 校验token时要使用
-app.use(expressJWT({
+app.use(expressJWT.expressj({
     secret: secretOrPrivateKey   
 }).unless({
     path: ['/getToken']  //除了这个地址，其他的URL都需要验证

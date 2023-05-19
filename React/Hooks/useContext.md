@@ -104,7 +104,7 @@ export default ComponentF
 
 ```js
 const UserContext = React.createContext('')
-复制代码
+
 ```
 
 > 创建一个 Context 对象。当 React 渲染一个订阅了这个 Context 对象的组件，这个组件会从组件树中离自身最近的那个匹配的 Provider 中读取到当前的 context 值。
@@ -115,11 +115,10 @@ const UserContext = React.createContext('')
 
 在根节点中使用 Provider 包裹子节点，将 context 提供给子节点
 
-```js
+```jsx
 <UserContext.Provider value={'chuanshi'}>
   <ComponentC />
 </UserContext.Provider>
-复制代码
 ```
 
 > 每个 Context 对象都会返回一个 Provider React 组件，它允许消费组件订阅 context 的变化。

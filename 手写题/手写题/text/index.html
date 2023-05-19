@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* body {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+
+        .content {
+            width: 100%;
+            display: flex;
+            background-color: black;
+            height: 300px;
+        }
+
+        .left,
+        .right {
+            width: 200px;
+            height: 100%;
+            background-color: aqua;
+        }
+
+        .middle {
+            flex: 1;
+        } */
+        /* .content {
+            width: 0px;
+            height: 0px;
+            border: 30px solid red;
+            border-radius: 60px 0 0 0;
+        } */
+        /* .content {
+            width: 100px;
+            height: 100px;
+            border-bottom: 0;
+            border-left: 10px solid black;
+            border-top: 10px solid black;
+            border-right: 0;
+            transform: rotate(-45deg);
+        } */
+        .parent {
+            background: grey;
+            width: 100%;
+            height: 100px;
+            
+        }
+
+        .child{
+            float: left;
+            background: red;
+            width: 50px;
+            height: 50px;
+            margin-left: 0;
+            margin-right: 30px;
+        }
+        .child:nth-child(3){
+            margin-right: 0px;
+        }
+    </style>
+</head>
+<body>
+    <!-- <div class="content">
+        <!-- <div class="left"></div>
+        <div class="middle"></div>
+        <div class="right"></div> -->
+    <!-- </div>  -->
+    <div class="parent">
+        <div class="child"></div>
+        <div class="child"></div>
+        <div class="child"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #woc {
+            width: 200px;
+            height: 100px;
+            background: #FFD900;
+            border-radius: 100%/50% 100%  0 0;
+        }
+    </style>
+</head>
+
+<body>
+    <input />
+    <div id="woc"></div>
+</body>
+<script>
+    const inp = document.querySelector('input')
+    function debounce(func, delay, ...args) {
+        let timer = null;
+        return  function (){
+            if (timer !== null) {
+                clearTimeout(timer)
+            }
+            timer = setTimeout(() =>{
+                func.call(this,...args)
+                console.log(this);
+            }, delay)
+        }
+    }
+    function x() {
+        console.log(this);
+    }
+    inp.addEventListener('change', debounce(x, 1000))
+
+
+    // let a = {}
+    // function text() {
+    //     // console.log(this);
+    //     function nimasil() {
+    //         console.log(this);
+    //     }
+    //     nimasil()
+    // }
+    // text.call(a)
+</script>
+
+</html>

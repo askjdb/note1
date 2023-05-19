@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            height: 200vh;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function dec(fn, delay, ...args) {
+            let timer = null;
+            return function (...args) {
+                if (timer !== null) {
+                    clearTimeout(timer)
+                }
+                timer = setTimeout(() => {
+                    fn.call(this, ...args)
+                }, delay);
+            }
+        }
+
+        const a = () => {
+            console.log('执行了scroll');
+        }
+
+        window.addEventListener('scroll', dec(a, 100))
+    </script>
+</body>
+
+</html>

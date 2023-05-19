@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        main {
+            /*对子元素开启弹性布局*/
+            display: flex;
+            /*弹性元素在必要的时候换行*/
+            flex-wrap: wrap;
+            /*将弹性元素居中*/
+            justify-content: center;
+        }
+        
+        textarea,
+        button {
+            font-family: 'Noto Serif SC', STFangSong, serif;
+            font-size: 17px;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <textarea name="input" rows="20" cols="40"></textarea>
+        <textarea name="output" rows="20" cols="40"></textarea>
+        <button name="compile">Lexical Analysis</button>
+    </main>
+</body>
+<script>
+    let inputBox = document.querySelector("textarea[name=input]");
+    let outputBox = document.querySelector("textarea[name=output]");
+    let btnCompile = document.querySelector("button[name=compile]");
+    btnCompile.addEventListener("click", event => {
+        let inputCode = inputBox.value;
+        outputBox.value = JSON.stringify(Lexical_Analysis(inputCode));
+    });
+    /*
+     * 规则:
+    识别保留字：if、int、for、while、do、return、break、continue；
+    单词种别码为1。
+    其他的都识别为标识符；单词种别码为2。
+    常数为无符号整形数；单词种别码为3。
+    运算符包括：+、-、*、/、=、>、<、>=、<=、!= ；单词种别码为4。
+    分隔符包括：,、;、{、}、(、)； 单词种别码为5。
+     */
+    const reservedWords = ['if', 'int', 'for', 'while', 'do', 'return', 'break', 'continue'];
+    const operators = ['+', '-', '*', '/', '=', '<', '>', '!', '>=', '<=', '!='];
+    const separators = [',', ';', '{', '}', '(', ')'];
+
+    function Lexical_Analysis(str) {
+        /**
+         * current用于标识当前字符位置,
+         * str[cur]即为当前字符
+         */
+        let cur = 0;
+        /**
+         * tokens存储词法分析的最终结果
+         */
+        let tokens = [];
+
+        while(cur < str.length) {
+
+            if(/\s/.test(str[cur])) { // 跳过空格
+                cur++;
+            } else if(/[a-z]/i.test(str[cur])) { // 读单词
+                debugger;
+                let word = "" + str[cur++];
+                // 测试下一位字符,如果不是字母直接进入下一次循环(此时cur已经右移)
+                // 如果是则继续读字母,并将cur向右移动
+                while(cur < str.length && /[a-z]/i.test(str[cur])) {
+                    // cur < str.length防止越界
+                    word += str[cur++];
+                }
+                if(reservedWords.includes(word)) {
+                    tokens.push({
+                        type: 1,
+                        value: word,
+                    }); // 存储保留字(关键字)
+                } else {
+                    tokens.push({
+                        type: 2,
+                        value: word,
+                    }); // 存储普通单词                            
+                }
+            } else if(separators.includes(str[cur])) {
+                tokens.push({
+                    type: 5,
+                    value: str[cur++],
+                }); // 存储分隔符并将cur向右移动                                            
+            } else if(operators.includes(str[cur])) {
+                let operator = "" + str[cur++];
+                if(['>', '<', '!'].includes(operator)) {
+                    // 如果下一个字符是=就添加到operator并再次向右移动cur
+                    if(str[cur] = '=') {
+                        operator += str[cur++];
+                    }
+                }
+                tokens.push({
+                    type: 4,
+                    value: operator,
+                }); // 存储运算符                        
+            } else if(/[0-9]/.test(str[cur])) {
+                let val = "" + str[cur++];
+                // cur < str.length防止越界
+                while(cur < str.length && /[0-9]/.test(str[cur])) {
+                    val += str[cur++];
+                }
+                tokens.push({
+                    type: 3,
+                    value: val,
+                }); // 存储整数数字    
+            } else {
+                return "包含非法字符：" + str[cur];
+            }
+
+        }
+        return tokens;
+    }
+</script>
+</html>
