@@ -32,7 +32,7 @@
 ```js
 const io = new IntersectionObserver(callback, options)
 
-io.observe(DOM)复制代码
+io.observe(DOM)
 const options = {
   root: null,
   rootMargin: 0,

@@ -70,8 +70,6 @@ Cookie 曾经用于一般的客户端存储。虽然这是合法的，因为它�
 
 上面的示例创建的是会话 Cookie ，会话 Cookie 有个特征，客户端关闭时 Cookie 会删除，因为它没有指定`Expires`或 `Max-Age` 指令。
 
-![image-20230511183715744](C:\Users\123\AppData\Roaming\Typora\typora-user-images\image-20230511183715744.png)
-
 会话Cookie的生命周期就是浏览器会话期间
 
 但是，Web 浏览器可能会使用会话还原，这会使大多数会话 Cookie 保持永久状态，就像从未关闭过浏览器一样。

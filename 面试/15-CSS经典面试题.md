@@ -25,6 +25,7 @@
 - 设置浮动
 - *overflow* 设置为 *auto、scroll、hidden*
 - *positon* 设置为 *absolute、fixed*
+- display 设为 flex , grid
 
 常见的 *BFC* 应用有：
 

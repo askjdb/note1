@@ -142,4 +142,3 @@ SSL/TLS协议的基本思路是采用[公钥加密法](http://en.wikipedia.org/w
 
 ![img](https://img-blog.csdnimg.cn/20190805155820820.gif)
 
-![image-20230426205023343](C:\Users\123\AppData\Roaming\Typora\typora-user-images\image-20230426205023343.png)

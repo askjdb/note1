@@ -25,7 +25,6 @@ const Parent = () => {
         <div> {getTotal}</div>
     </div>)
 }
-复制代码
 ```
 
 > memo
@@ -51,7 +50,7 @@ const Parent = () => {
     …… ……
     <Child name ={text}/>
 }
-复制代码
+
 ```
 
 - 使用memoAPI来缓存组件
@@ -61,7 +60,7 @@ import React, { memo } from "react"
 const CacheComponent = memo(() => {
   return <div> ^^ </div>  
 })
-复制代码
+
 ```
 
 > useCallback
@@ -106,7 +105,7 @@ const handleInputChange =useCallback((e) => {
 const handleInputChange =useCallback((e) => {
      setText(e.target.value )
 },[count]) 
-复制代码
+
 ```
 
 ### useEffect 和 useMemo 区别
@@ -139,13 +138,12 @@ const renderButton = useCallback(
 
 - `useMemo返回的的是一个值`，用于避免在每次渲染时都进行高开销的计算
 
-```pre
+```jsx
 const result = useMemo(() => {
     for (let i = 0; i < 100000; i++) {
       (num * Math.pow(2, 15)) / 9;
     }
 }, [num]);
-复制代码
 ```
 
 ### 什么时候用useCallback和useMemo进行优化

@@ -19,7 +19,7 @@
 > 第一个参数是一个`函数`，必传项。是组件要执行的副作用。可以看做`componentDidMount`，`componentDidUpdate` 和 `componentWillUnmount` 这三个函数的组合。
 
 ```js
-js复制代码useEffect(() => {
+ useEffect(() => {
     console.log('执行副作用');   // 普通函数，执行副作用，可以实现componentDidMount、componentDidUpdate
     return () => {             // return函数, 组件销毁时清除副作用，可以实现componentWillUnmount
         console.log("清除副作用");
@@ -44,7 +44,7 @@ js复制代码useEffect(() => {
 ## 1. 不传值
 
 ```js
-js复制代码const [count, setCount] = useState<number>(1);
+ const [count, setCount] = useState<number>(1);
 useEffect(() => {
     setTimeout(() => {
         setCount(count + 1);
@@ -71,7 +71,7 @@ useEffect(() => {
 ## 2. 空数组作为依赖
 
 ```js
-js复制代码const [count, setCount] = useState<number>(1);
+ const [count, setCount] = useState<number>(1);
 useEffect(() => {
     setTimeout(() => {
         setCount(count + 1);
@@ -95,7 +95,7 @@ useEffect(() => {
 ## 3. 基本类型作为依赖
 
 ```js
-js复制代码const [count, setCount] = useState<number>(1);  // 基本类型以number为例
+ const [count, setCount] = useState<number>(1);  // 基本类型以number为例
 useEffect(() => {
     setTimeout(() => {
         setCount(count + 1);
@@ -123,8 +123,8 @@ useEffect(() => {
 
 ### 4.1数组作为依赖
 
-```scss
-scss复制代码const [count, setCount] = useState(1);
+```jsx
+const [count, setCount] = useState(1);
 const newArr = [4,5];
 useEffect(() => {
     setTimeout(() => {
@@ -148,7 +148,7 @@ useEffect(() => {
 **上述数组作为依赖代码，去除setTimeout会出现什么情况？**
 
 ```js
-js复制代码const [count, setCount] = useState(1);
+ const [count, setCount] = useState(1);
 const newArr = [4,5];
 useEffect(() => {
     setCount(count+1);
@@ -166,8 +166,8 @@ useEffect(() => {
 
 **如何解决：** 使用useRef，useRef会在每次渲染时返回同一个ref对象，返回的`ref`在组件的`整个生命周期内保持不变`。
 
-```js
-js复制代码const [count, setCount] = useState(1);
+```jsx
+ const [count, setCount] = useState(1);
 const refArr = useRef([4, 5, 6]);
 useEffect(() => {
     setCount(count+1);
@@ -181,8 +181,8 @@ useEffect(() => {
 
 ### 4.2 函数作为依赖
 
-```scss
-scss复制代码const [count, setCount] = useState(1);
+```jsx
+const [count, setCount] = useState(1);
 const consoleFunction = () => {
     console.log('consoleFunction');
 };
@@ -207,8 +207,8 @@ useEffect(() => {
 
 **上述函数作为依赖代码，去除setTimeout会出现什么情况？**
 
-```js
-js复制代码const [count, setCount] = useState(1);
+```jsx
+ const [count, setCount] = useState(1);
 const consoleFunction = () => {
     console.log('consoleFunction');
 };
@@ -227,8 +227,8 @@ useEffect(() => {
 
 **如何解决：** 使用useCallback，useCallback返回该回调函数的 memoized 版本，该回调函数仅在某个依赖项改变时才会更新。
 
-```js
-js复制代码const [count, setCount] = useState(1);
+```jsx
+ const [count, setCount] = useState(1);
 const consoleFunction = useCallback(() => {
     console.log('consoleFunction');
 }, []);
@@ -244,8 +244,8 @@ useEffect(() => {
 
 ### 4.3对象作为依赖
 
-```scss
-scss复制代码const [count, setCount] = useState(1);
+```jsx
+const [count, setCount] = useState(1);
 const obj = {name: 'zhangsan'};
 useEffect(() => {
     setTimeout(() => {
@@ -268,8 +268,8 @@ useEffect(() => {
 
 **上述对象作为依赖代码，去除setTimeout会出现什么情况？**
 
-```ini
-ini复制代码const obj = {name: 'zhangsan'};
+```jsx
+const obj = {name: 'zhangsan'};
 useEffect(() => {
     setCount(count + 1);
     console.log(`第二个参数: 对象, 第 ${count} 次执行`);
@@ -286,8 +286,8 @@ useEffect(() => {
 
 **如何解决：** 使用useMemo，useMemo该回调函数仅在某个依赖项改变时才会更新。此处使用[]依赖，组件重新渲染后对象不再重新定义。
 
-```js
-js复制代码const [count, setCount] = useState(1);
+```jsx
+ const [count, setCount] = useState(1);
 const obj = useMemo(() => ({name: 'zhangsan'}), []);
 useEffect(() => {
     setCount(count + 1);
@@ -303,8 +303,8 @@ useEffect(() => {
 
 ## 实现componentDidMount
 
-```js
-js复制代码const Home: React.FC<Iprops> = () => {
+```jsx
+ const Home: React.FC<Iprops> = () => {
   useEffect(() => {
     getList() // 调用方法发起异步请求
   }, [])；
@@ -322,8 +322,8 @@ js复制代码const Home: React.FC<Iprops> = () => {
 
 ## 实现componentDidUpdate
 
-```js
-js复制代码const Home: React.FC<Iprops> =() => {
+```jsx
+ const Home: React.FC<Iprops> =() => {
   const [count, setCount] = useState(0);
   useEffect(() => {
     getList();  // 调用发起异步请求
@@ -341,8 +341,8 @@ js复制代码const Home: React.FC<Iprops> =() => {
 
 ## 实现componentWillUnmount
 
-```js
-js复制代码useEffect(() => {
+```jsx
+ useEffect(() => {
     getList();
     return () => {
         console.log('组件注销, 实现componentWillUnmount');
