@@ -82,3 +82,35 @@ var obj1 = new fn1('male') // name： undefined age: undefined height: 80cm Gend
 obj1.say() // Fn.prototype.say
 ```
 
+## 关于链式 bind 的操作
+
+在 JS 中可以利用 `.bind` 的方式重新指定 `this` 的指向，而[级联](https://so.csdn.net/so/search?q=级联&spm=1001.2101.3001.7020)（链式）的 `.bind` 并不会奏效，只会绑定第一个 bind 的 `this`。以下是一种 `.bind` 的实现：
+
+```js
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function(oThis) {
+    if (typeof this !== 'function') {
+      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable')
+    }
+    var aArgs   = Array.prototype.slice.call(arguments, 1),
+        fToBind = this,
+        fNOP    = function() {},
+        fBound  = function() {
+          return fToBind.apply(
+            this instanceof fNOP ? this : oThis,
+            aArgs.concat(Array.prototype.slice.call(arguments))
+          )
+        }
+    if (this.prototype) {
+        fNOP.prototype = this.prototype; 
+    }
+    fBound.prototype = new fNOP()
+    return fBound
+  }
+}
+
+```
+
+可以看到，若链式进行 `.bind` 操作，实际的代码会变为一层一层的 apply 嵌套，在此情况下，只有最内层的 apply this 会对原始函数奏效。
+
+然而，`bind()` 函数本身不支持链式调用。当你调用 `bind()` 函数时，它将返回一个新的函数，而不是原始函数。
