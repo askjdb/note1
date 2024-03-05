@@ -150,3 +150,109 @@ export const CounterComponent = ({ value }) => {
 - createStore()： 创建仓库
 - useSelector()： 用户获取数据仓库某一项数据
 - useDispatch()：更新数据
+
+
+
+# 四.ts中使用hooks
+
+### usedispatch
+
+在使用 `useDispatch` 的时候，你可以为 `useDispatch` 钩子提供一个泛型参数来指定 `dispatch` 函数的类型。通常，这个类型是 Redux 的 `Dispatch` 类型。如果你使用了 Thunk 中间件，你可能还需要使用 `ThunkDispatch` 类型。
+
+以下是一个示例，演示如何在使用 `useDispatch` 时指定泛型参数：
+
+```tsx
+import { useDispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+
+// 定义 action 的类型
+interface YourAction {
+  type: string;
+  payload: string;
+}
+
+// 使用 useDispatch 钩子，并指定泛型参数为 Dispatch<YourAction>
+const YourComponent: React.FC = () => {
+  const dispatch = useDispatch<Dispatch<YourAction>>();
+
+  const handleClick = () => {
+    // 使用 dispatch 触发同步 action
+    dispatch({
+      type: 'YOUR_ACTION_TYPE',
+      payload: 'your payload',
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={handleClick}>Dispatch Action</button>
+    </div>
+  );
+};
+
+export default YourComponent;
+```
+
+在这个例子中，`useDispatch<Dispatch<YourAction>>()` 中的泛型参数 `Dispatch<YourAction>` 表示 `dispatch` 函数的类型是能够处理 `YourAction` 类型的 action。根据你的项目需要，你可以使用不同的泛型参数来适配不同的 `dispatch` 函数类型。
+
+### useSelector
+
+在 TypeScript 中，使用 `useSelector` 钩子时，你可以通过泛型参数指定选择器函数的返回类型。以下是一个简单的示例：
+
+```tsx
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store'; // 假设你的 RootState 在这里定义
+
+// 定义 state 中的某个部分的类型
+interface YourStateSlice {
+  yourValue: string;
+}
+
+const YourComponent: React.FC = () => {
+  // 使用泛型参数指定选择器函数的返回类型
+  const yourValue = useSelector<RootState, YourStateSlice>(
+    (state) => state.yourReducer.yourValue
+  );
+
+  return (
+    <div>
+      <p>{`Your Value: ${yourValue}`}</p>
+    </div>
+  );
+};
+
+export default YourComponent;
+```
+
+在这个例子中，`useSelector<RootState, YourStateSlice>` 中的泛型参数分别是 `RootState`（整个 Redux store 的状态类型）和 `YourStateSlice`（`yourReducer` 中的某个部分的状态类型）。这样，你就可以在组件中安全地使用 `yourValue`。
+
+确保 `RootState` 是在你的项目中定义的，它应该反映整个 Redux store 的状态结构。
+
+```tsx
+import { useSelector } from 'react-redux';
+
+// 示例的 RootState 是一个直接的值
+const RootState = {
+  yourReducer: {
+    yourValue: 'some value',
+  },
+  // ...其他的 reducer 或状态部分
+};
+
+const YourComponent: React.FC = () => {
+  // 直接使用 RootState 作为选择器的泛型参数
+  const yourValue = useSelector<typeof RootState>(
+    (state) => state.yourReducer.yourValue
+  );
+
+  return (
+    <div>
+      <p>{`Your Value: ${yourValue}`}</p>
+    </div>
+  );
+};
+
+export default YourComponent;
+```
+
+在这个例子中，`useSelector<typeof RootState>` 中的泛型参数是 `typeof RootState`，它表示 `RootState` 的值的类型。这种情况下，直接使用 `RootState` 的值作为泛型参数是合适的。如果 `RootState` 是一个复杂的嵌套结构，你也可以选择在使用时手动提供类型。

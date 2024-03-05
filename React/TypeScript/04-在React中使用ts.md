@@ -40,7 +40,7 @@ export default App;
 
 ```typescript
 class App extends React.PureComponent<IProps, IState> {}
-复制代码
+
 ```
 
 `React.PureComponent`是有第三个参数的，它表示`getSnapshotBeforeUpdate`的返回值。
@@ -55,7 +55,7 @@ import React, {PureComponent, Component} from "react";
 class App extends PureComponent<IProps, IState> {}
 
 class App extends Component<IProps, IState> {}
-复制代码
+
 ```
 
 那如果定义时候我们不知道组件的props的类型，只有在调用时才知道组件类型，该怎么办呢？这时泛型就发挥作用了：
@@ -80,7 +80,7 @@ type IProps = { name: string; age: number; };
 
 <MyComponent<IProps> name="React" age={18} />;          // Success
 <MyComponent<IProps> name="TypeScript" age="hello" />;  // Error
-复制代码
+
 ```
 
 ### 2. 函数组件
@@ -104,14 +104,14 @@ const App = (props: IProps) => {
 }
 
 export default App;
-复制代码
+
 ```
 
 除此之外，函数类型还可以使用`React.FunctionComponent<P={}>`来定义，也可以使用其简写`React.FC<P={}>`，两者效果是一样的。它是一个泛型接口，可以接收一个参数，参数表示props的类型，这个参数不是必须的。它们就相当于这样：
 
 ```typescript
 type React.FC<P = {}> = React.FunctionComponent<P>
-复制代码
+
 ```
 
 最终的定义形式如下：
@@ -132,7 +132,7 @@ const App: React.FC<IProps> = (props) => {
 }
 
 export default App;
-复制代码
+
 ```
 
 当使用这种形式来定义函数组件时，props中默认会带有children属性，它表示该组件在调用时，其内部的元素，来看一个例子，首先定义一个组件，组件中引入了Child1和Child2组件：
@@ -155,7 +155,7 @@ const App: React.FC<IProps> = (props) => {
 };
 
 export default App;
-复制代码
+
 ```
 
 Child1组件结构如下：
@@ -176,7 +176,7 @@ const Child1: React.FC<IProps> = (props) => {
 };
 
 export default Child1;
-复制代码
+
 ```
 
 我们在Child1组件中打印了children属性，它的值是一个数组，包含Child2对象和后面的文本：
@@ -206,7 +206,7 @@ type IProps = { name: string; age: number; };
 
 <MyComponent<IProps> name="React" age={18} />;          // Success
 <MyComponent<IProps> name="TypeScript" age="hello" />;  // Error
-复制代码
+
 ```
 
 如果使用箭头函数定义的函数组件，直接这样调用是错误的：
@@ -245,7 +245,7 @@ declare global {
     interface Element extends React.ReactElement<any, any> { }
   }
 }
-复制代码
+
 ```
 
 可以看到，JSX.Element是ReactElement的子类型，它没有增加属性，两者是等价的。也就是说两种类型的变量可以相互赋值。 
@@ -255,7 +255,7 @@ JSX.Element 可以通过执行 React.createElement 或是转译 JSX 获得：
 ```typescript
 const jsx = <div>hello</div>
 const ele = React.createElement("div", null, "hello");
-复制代码
+
 ```
 
 ### 2. React.ReactElement
@@ -268,7 +268,7 @@ interface ReactElement<P = any, T extends string | JSXElementConstructor<any> = 
    props: P;
    key: Key | null;
 }
-复制代码
+
 ```
 
 ReactElement是一个接口，包含type,props,key三个属性值。该类型的变量值只能是两种： null 和 ReactElement实例。 
@@ -286,7 +286,7 @@ type ReactChild = ReactElement | ReactText;
 interface ReactNodeArray extends Array<ReactNode> {}
 type ReactFragment = {} | ReactNodeArray;
 type ReactNode = ReactChild | ReactFragment | ReactPortal | boolean | null | undefined;
-复制代码
+
 ```
 
 可以看到，ReactNode是一个联合类型，它可以是string、number、ReactElement、null、boolean、ReactNodeArray。由此可知。ReactElement类型的变量可以直接赋值给ReactNode类型的变量，但反过来是不行的。
@@ -303,7 +303,7 @@ class MyComponent extends React.Component {
 const component: React.ReactNode<MyComponent> = <MyComponent />;
 // 错误
 const component: React.ReactNode<MyComponent> = <OtherComponent />;
-复制代码
+
 ```
 
 上面的代码中，给component变量设置了类型是Mycomponent类型的react实例，这时只能给其赋值其为MyComponent的实例组件。 
@@ -325,7 +325,7 @@ export interface CSSProperties extends CSS.Properties<string | number> {
    * https://github.com/frenic/csstype#what-should-i-do-when-i-get-type-errors
    */
 }
-复制代码
+
 ```
 
 React.CSSProperties是React基于TypeScript定义的CSS属性类型，可以将一个方法的返回值设置为该类型：
@@ -348,7 +348,7 @@ export const SidebarComponent: React.StatelessComponent<Props> = props => (
     {props.children}
   </div>
 );
-复制代码
+
 ```
 
 这里divStyle组件的返回值就是React.CSSProperties类型。
@@ -361,21 +361,21 @@ const divStyle: React.CSSProperties = {
     height: "7rem",
     backgroundColor: `rgb(${props.color.red},${props.color.green}, ${props.color.blue})`
 };
-复制代码
+
 ```
 
 这个变量可以在HTML标签的style属性上使用：
 
 ```typescript
 <div style={divStyle} />
-复制代码
+
 ```
 
 在React的类型声明文件中，style属性的类型如下：
 
 ```typescript
 style?: CSSProperties | undefined;
-复制代码
+
 ```
 
 ## 三、React Hooks
@@ -390,21 +390,21 @@ style?: CSSProperties | undefined;
 
 ```typescript
 const [count, setCount] = useState<number>(1)
-复制代码
+
 ```
 
 如果初始值为null，需要显式地声明 state 的类型：
 
 ```typescript
 const [count, setCount] = useState<number | null>(null); 
-复制代码
+
 ```
 
 如果state是一个对象，想要初始化一个空对象，可以使用断言来处理：
 
 ```typescript
 const [user, setUser] = React.useState<IUser>({} as IUser);
-复制代码
+
 ```
 
 实际上，这里将空对象{}断言为IUser接口就是欺骗了TypeScript的编译器，由于后面的代码可能会依赖这个对象，所以应该在使用前及时初始化 user 的值，否则就会报错。
@@ -432,7 +432,7 @@ function useState<S = undefined>(): [S | undefined, Dispatch<SetStateAction<S | 
    * @version 16.8.0
    * @see https://reactjs.org/docs/hooks-reference.html#usereducer
    */
-复制代码
+
 ```
 
 可以看到，这里定义两种形式，分别是有初始值和没有初始值的形式。
@@ -451,7 +451,7 @@ useEffect(
   },
   [props.source]
 );
-复制代码
+
 ```
 
 当函数的返回值不是函数或者effect函数中未定义的内容时，如下：
@@ -463,7 +463,7 @@ useEffect(
       return null; 
     }
 );
-复制代码
+
 ```
 
 TypeScript就会报错：
@@ -493,7 +493,7 @@ function useEffect(effect: EffectCallback, deps?: DependencyList): void;
    * @version 16.8.0
    * @see https://reactjs.org/docs/hooks-reference.html#useimperativehandle
    */
-复制代码
+
 ```
 
 可以看到，useEffect的第一个参数只允许返回一个函数。
@@ -504,7 +504,7 @@ function useEffect(effect: EffectCallback, deps?: DependencyList): void;
 
 ```typescript
 const nameInput = React.useRef<HTMLInputElement>(null)
-复制代码
+
 ```
 
 这里给实例的类型指定为了input输入框类型。 
@@ -514,14 +514,14 @@ const nameInput = React.useRef<HTMLInputElement>(null)
 ```typescript
 const nameInput = React.useRef<HTMLInputElement>(null)
 nameInput.current.innerText = "hello world";
-复制代码
+
 ```
 
 这种形式下，ref1.current是只读的（read-only），所以当我们将它的innerText属性重新赋值时会报以下错误：
 
 ```typescript
 Cannot assign to 'current' because it is a read-only property.
-复制代码
+
 ```
 
 那该怎么将current属性变为动态可变得的，先来看看类型声明文件中 useRef 是如何定义的：
@@ -542,21 +542,21 @@ Cannot assign to 'current' because it is a read-only property.
    * @version 16.8.0
    * @see https://reactjs.org/docs/hooks-reference.html#useref
    */
-复制代码
+
 ```
 
 这段代码的第十行的告诉我们，如果需要useRef的直接可变，就需要在泛型参数中包含'| null'，所以这就是当初始值为null的第二种定义形式：
 
 ```typescript
 const nameInput = React.useRef<HTMLInputElement | null>(null);
-复制代码
+
 ```
 
 这种形式下，nameInput.current就是可写的。不过两种类型在使用时都需要做类型检查：
 
 ```typescript
 nameInput.current?.innerText = "hello world";
-复制代码
+
 ```
 
 那么问题来了，为什么第一种写法在没有操作current时没有报错呢？因为useRef在类型定义式具有多个重载声明，第一种方式就是执行的以下函数重载：
@@ -575,7 +575,7 @@ function useRef<T>(initialValue: T|null): RefObject<T>;
   * @version 16.8.0
   * @see https://reactjs.org/docs/hooks-reference.html#useref
   */
-复制代码
+
 ```
 
 从上useRef的声明中可以看到，function useRef的返回值类型化是MutableRefObject，这里面的T就是参数的类型T，所以最终nameInput 的类型就是React.MutableRefObject。 
@@ -606,7 +606,7 @@ function useRef<T>(initialValue: T|null): RefObject<T>;
   * @version 16.8.0
   * @see https://reactjs.org/docs/hooks-reference.html#usememo
   */
-复制代码
+
 ```
 
 useCallback接收一个回调函数和一个依赖数组，只有当依赖数组中的值发生变化时才会重新执行回调函数。来看一个例子：
@@ -621,7 +621,7 @@ const memoizedCallback = useCallback(
   [b]
 );
 
-复制代码
+
 ```
 
 这里我们没有给回调函数中的参数a定义类型，所以下面的调用方式都不会报错：
@@ -629,7 +629,7 @@ const memoizedCallback = useCallback(
 ```typescript
 memoizedCallback("hello");
 memoizedCallback(5)
-复制代码
+
 ```
 
 尽管add方法的两个参数都是number类型，但是上述调用都能够用执行。所以为了更加严谨，我们需要给回调函数定义具体的类型：
@@ -641,7 +641,7 @@ const memoizedCallback = useCallback(
   },
   [b]
 );
-复制代码
+
 ```
 
 这时候如果再给回调函数传入字符串就会报错了：
@@ -663,7 +663,7 @@ function useMemo<T>(factory: () => T, deps: DependencyList | undefined): T;
     * @version 16.8.0
     * @see https://reactjs.org/docs/hooks-reference.html#usedebugvalue
     */
-复制代码
+
 ```
 
 useMemo和useCallback是非常类似的，但是它返回的是一个值，而不是函数。所以在定义useMemo时需要定义返回值的类型：
@@ -675,7 +675,7 @@ setTimeout(() => {
 }, 1000);
 
 const calculatedValue = useMemo<number>(() => a ** 2, [a]);
-复制代码
+
 ```
 
 如果返回值不一致，就会报错：
@@ -683,7 +683,7 @@ const calculatedValue = useMemo<number>(() => a ** 2, [a]);
 ```typescript
 const calculatedValue = useMemo<number>(() => a + "hello", [a]);
 // 类型“() => string”的参数不能赋给类型“() => number”的参数
-复制代码
+
 ```
 
 ### 6. useContext
@@ -697,7 +697,7 @@ const Welcome = () => {
   const { color } = useContext(ColorContext);
   return <div style={{ color }}>hello world</div>;
 };
-复制代码
+
 ```
 
 在使用useContext时，会自动推断出提供的上下文对象的类型，所以并不需要我们手动设置context的类型。当前，我们也可以使用泛型来设置context的类型：
@@ -708,7 +708,7 @@ interface IColor {
 }
 
 const ColorContext = React.createContext<IColor>({ color: "green" });
-复制代码
+
 ```
 
 下面是useContext在类型声明文件中的定义：
@@ -721,7 +721,7 @@ function useContext<T>(context: Context<T>/*, (not public API) observedBits?: nu
   * @version 16.8.0
   * @see https://reactjs.org/docs/hooks-reference.html#usestate
   */
-复制代码
+
 ```
 
 ### 7. useReducer
@@ -730,7 +730,7 @@ function useContext<T>(context: Context<T>/*, (not public API) observedBits?: nu
 
 ```typescript
 const [state, dispatch] = useReducer(reducer, initialArg, init);
-复制代码
+
 ```
 
 来看下面的例子：
@@ -759,7 +759,7 @@ const Counter = () => {
     </>
   );
 }
-复制代码
+
 ```
 
 当前的状态是无法推断出来的，可以给reducer函数添加类型，通过给reducer函数定义state和action来推断 useReducer 的类型，下面来修改上面的例子：
@@ -775,7 +775,7 @@ const initialState: State = {count: 0}
 const reducer = (state: State, action: ActionType) => {
   // ...
 }
-复制代码
+
 ```
 
 这样，在Counter函数中就可以推断出类型。当我们视图使用一个不存在的类型时，就会报错：
@@ -783,7 +783,7 @@ const reducer = (state: State, action: ActionType) => {
 ```typescript
 dispatch({type: 'reset'});
 // Error! type '"reset"' is not assignable to type '"increment" | "decrement"'
-复制代码
+
 ```
 
 除此之外，还可以使用泛型的形式来实现reducer函数的类型定义：
@@ -798,7 +798,7 @@ type State = { count: number };
 const reducer: React.Reducer<State, ActionType> = (state, action) => {
   // ...
 }
-复制代码
+
 ```
 
 其实dispatch方法也是有类型的：
@@ -842,7 +842,7 @@ const Counter: React.FC = () => {
 
 export default Counter;
 
-复制代码
+
 ```
 
 ## 四、事件处理
@@ -857,7 +857,7 @@ export default Counter;
 const handleEvent = (e: any) => {
     console.log(e.clientX, e.clientY)
 }
-复制代码
+
 ```
 
 由于Event事件对象中有很多的属性，所以我们也不方便把所有属性及其类型定义在一个interface中，所以React在声明文件中给我们提供了Event事件对象的类型声明。
@@ -899,7 +899,7 @@ const App: React.FC = () => {
   );
 }
 
-复制代码
+
 ```
 
 这里就给onChange方法的事件对象定义为了FormEvent类型，并且作用的对象时一个HTMLInputElement类型的标签（input标签） 
@@ -932,7 +932,7 @@ interface MouseEvent<T = Element, E = NativeMouseEvent> extends UIEvent<T, E> {
 interface ChangeEvent<T = Element> extends SyntheticEvent<T> {
   target: EventTarget & T;
 }
-复制代码
+
 ```
 
 在很多事件对象的声明文件中都可以看到 EventTarget 的身影。这是因为，DOM的事件操作（监听和触发），都定义在EventTarget接口上。EventTarget 的类型声明如下：
@@ -943,7 +943,7 @@ interface EventTarget {
     dispatchEvent(evt: Event): boolean;
     removeEventListener(type: string, listener?: EventListenerOrEventListenerObject | null, options?: EventListenerOptions | boolean): void;
 }
-复制代码
+
 ```
 
 比如在change事件中，会使用的e.target来获取当前的值，它的的类型就是EventTarget。来看下面的例子：
@@ -961,7 +961,7 @@ const onSourceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     }
     setSourceInput(e.target.value);
 };
-复制代码
+
 ```
 
 这里定义了一个input输入框，当触发onChange事件时，会调用onSourceChange方法，该方法的参数e的类型就是：React.ChangeEvent，而e.target的类型就是EventTarget：
@@ -985,7 +985,7 @@ const handleChangeCurrent = (item: IData, e: React.MouseEvent<HTMLDivElement>) =
     e.stopPropagation();
     setCurrent(item);
 };
-复制代码
+
 ```
 
 这点代码中，点击某个盒子，就将它设置为当前的盒子，方便执行其他操作。当鼠标点击盒子时，会触发handleChangeCurren方法，该方法有两个参数，第二个参数是event对象，在方法中执行了e.stopPropagation();是为了阻止冒泡事件，这里的stopPropagation()实际上并不是鼠标事件MouseEvent的属性，它是合成事件上的属性，来看看声明文件中的定义：
@@ -1018,7 +1018,7 @@ interface BaseSyntheticEvent<E = object, C = any, T = any> {
   timeStamp: number;
   type: string;
 }
-复制代码
+
 ```
 
 可以看到，这里的stopPropagation()是一层层的继承来的，最终来自于BaseSyntheticEvent合成事件类型。原生的事件集合SyntheticEvent就是继承自合成时间类型。SyntheticEvent<T = Element, E = Event>泛型接口接收当前的元素类型和事件类型，如果不介意这两个参数的类型，完全可以这样写：
@@ -1029,7 +1029,7 @@ interface BaseSyntheticEvent<E = object, C = any, T = any> {
     //... 
   }}
 />
-复制代码
+
 ```
 
 ### 2. 事件处理函数类型
@@ -1068,7 +1068,7 @@ type WheelEventHandler<T = Element> = EventHandler<WheelEvent<T>>;
 type AnimationEventHandler<T = Element> = EventHandler<AnimationEvent<T>>;
 // 过渡事件处理函数
 type TransitionEventHandler<T = Element> = EventHandler<TransitionEvent<T>>;
-复制代码
+
 ```
 
 这里面的T的类型也都是Element，指的是触发该事件的HTML标签元素的类型，下面第五部分会介绍。 
@@ -1096,7 +1096,7 @@ const App: React.FC = () => {
   );
 }
 
-复制代码
+
 ```
 
 这里给onChange方法定义了方法的类型，它是一个ChangeEventHandler的类型，并且作用的对象时一个HTMLImnputElement类型的标签（input标签）。
@@ -1135,7 +1135,7 @@ video: HTMLVideoElement;
 audio: HTMLAudioElement;
 meta: HTMLMetaElement;
 form: HTMLFormElement; 
-复制代码
+
 ```
 
 那什么时候会使用到标签类型呢，上面第四部分的Event事件类型和事件处理函数类型中都使用到了标签的类型。上面的很多的类型都需要传入一个ELement类型的泛型参数，这个泛型参数就是对应的标签类型值，可以根据标签来选择对应的标签类型。这些类型都继承自HTMLElement类型，如果使用时对类型类型要求不高，可以直接写HTMLELement。比如下面的例子：
@@ -1154,7 +1154,7 @@ form: HTMLFormElement;
     />
     取消修改
 </Button>
-复制代码
+
 ```
 
 其实，在直接操作DOM时也会用到标签类型，虽然我们现在通常会使用框架来开发，但是有时候也避免不了直接操作DOM。比如我在工作中，项目中的某一部分组件是通过npm来引入的其他组的组件，而在很多时候，我有需要动态的去个性化这个组件的样式，最直接的办法就是通过原生JavaScript获取到DOM元素，来进行样式的修改，这时候就会用到标签类型。 
@@ -1169,7 +1169,7 @@ document.querySelectorAll('.paper').forEach(item => {
     item.removeChild(item.firstChild as ChildNode);
   }
 })
-复制代码
+
 ```
 
 这是我最近写的一段代码（略微删改），在第一页有个add-ele元素的时候就删除它。这里我们将item.firstChild断言成了HTMLDivElement类型，如果不断言，item.firstChild的类型就是ChildNode，而ChildNode类型中是不存在classList属性的，所以就就会报错，当我们把他断言成HTMLDivElement类型时，就不会报错了。很多时候，标签类型可以和断言（as）一起使用。 
@@ -1218,7 +1218,7 @@ interface InputHTMLAttributes<T> extends HTMLAttributes<T> {
 
   onChange?: ChangeEventHandler<T> | undefined;
 }
-复制代码
+
 ```
 
 如果我们需要直接操作DOM，就可能会用到元素属性类型，常见的元素属性类型如下：
@@ -1317,14 +1317,14 @@ Button.defaultProps = {
 }
 
 export default Button;
-复制代码
+
 ```
 
 这段代码就是用来封装一个buttom按钮，在button的基础上添加了一些自定义属性，比如上面将button的类型使用交叉类型（&）获得自定义属性和原生 button 属性 ：
 
 ```typescript
 type NativeButtonProps = BaseButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement> 
-复制代码
+
 ```
 
 可以看到，标签属性类型在封装组件库时还是很有用的，更多用途可以自己探索~
@@ -1345,7 +1345,7 @@ interface IPerson {
 }
 type T = keyof IPerson 
 // T 类型为： "name" | "age" | "number"
-复制代码
+
 ```
 
 in关键字可以遍历枚举类型,：
@@ -1356,7 +1356,7 @@ type Obj =  {
   [p in Keys]: any
 } 
 // Obj类型为： { name: any, age: any, number: any }
-复制代码
+
 ```
 
 keyof 可以产生联合类型, in 可以遍历枚举类型, 所以经常一起使用, 下面是Partial工具泛型的定义：
@@ -1369,7 +1369,7 @@ keyof 可以产生联合类型, in 可以遍历枚举类型, 所以经常一起�
 type Partial<T> = {
     [P in keyof T]?: T[P];
 };
-复制代码
+
 ```
 
 这里，keyof T 获取 T 所有属性名, 然后使用 in 进行遍历, 将值赋给 P, 最后 T[P] 取得相应属性的值。中间的?就用来将属性设置为可选。
@@ -1386,7 +1386,7 @@ interface IPerson {
 const person: Partial<IPerson> = {
   name: "zhangsan";
 }
-复制代码
+
 ```
 
 ### 2. Required
@@ -1401,7 +1401,7 @@ Required 的作用是将传入的属性变为必选项，和上面的工具泛�
 type Required<T> = {
     [P in keyof T]-?: T[P];
 };
-复制代码
+
 ```
 
 可以看到，这里使用-?将属性设置为必选，可以理解为减去问号。适用形式和上面的Partial差不多：
@@ -1418,7 +1418,7 @@ const person: Required<IPerson> = {
   age: 18;
   height: 180;
 }
-复制代码
+
 ```
 
 ### 3. Readonly
@@ -1432,7 +1432,7 @@ const person: Required<IPerson> = {
 type Readonly<T> = {
     readonly [P in keyof T]: T[P];
 };
-复制代码
+
 ```
 
 使用示例如下：
@@ -1449,7 +1449,7 @@ const person: Readonly<IPerson> = {
 }
 
 person.age = 20;  //  Error: cannot reassign a readonly property
-复制代码
+
 ```
 
 可以看到，通过 Readonly 将IPerson的属性转化成了只读，不能再进行赋值操作。
@@ -1465,7 +1465,7 @@ person.age = 20;  //  Error: cannot reassign a readonly property
 type Pick<T, K extends keyof T> = {
     [P in K]: T[P];
 };
-复制代码
+
 ```
 
 使用示例如下：
@@ -1481,7 +1481,7 @@ const person: Pick<IPerson, "name" | "age"> = {
   name: "zhangsan",
   age: 18
 }
-复制代码
+
 ```
 
 ### 5. Record<K extends keyof any, T>
@@ -1495,7 +1495,7 @@ Record 用来构造一个类型，其属性名的类型为K，属性值的类型
 type Record<K extends keyof any, T> = {
     [P in K]: T;
 };
-复制代码
+
 ```
 
 使用示例如下：
@@ -1512,7 +1512,7 @@ const page: Record<IPage, IPageinfo> = {
     contact: {title: 'contact'},
     home: {title: 'home'},
 }
-复制代码
+
 ```
 
 ### 6. Exclude<T, U>
@@ -1524,7 +1524,7 @@ Exclude 就是从一个联合类型中排除掉属于另一个联合类型的子
  * Exclude from T those types that are assignable to U
  */
 type Exclude<T, U> = T extends U ? never : T;
-复制代码
+
 ```
 
 使用示例如下：
@@ -1540,7 +1540,7 @@ const person: Exclude<IPerson, "age" | "sex"> = {
   name: "zhangsan";
   height: 180;
 }
-复制代码
+
 ```
 
 ### 7. Omit<T, K extends keyof any>
@@ -1552,7 +1552,7 @@ const person: Exclude<IPerson, "age" | "sex"> = {
  * Construct a type with the properties of T except for those in type K.
  */
 type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
-复制代码
+
 ```
 
 使用示例如下：
@@ -1567,7 +1567,7 @@ interface IPerson {
 const person: Omit<IPerson, "age" | "height"> = {
   name: "zhangsan";
 }
-复制代码
+
 ```
 
 ### 8. ReturnType
@@ -1579,7 +1579,7 @@ ReturnType会返回函数返回值的类型，其声明形式如下：
  * Obtain the return type of a function type
  */
 type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any;
-复制代码
+
 ```
 
 使用示例如下：
@@ -1590,7 +1590,7 @@ function foo(type): boolean {
 }
 
 type FooType = ReturnType<typeof foo>
-复制代码
+
 ```
 
 这里使用 typeof 是为了获取 foo 的函数签名，等价于 (type: any) => boolean。
@@ -1645,7 +1645,7 @@ class HttpRequest {
   }
 }
 export default HttpRequest;
-复制代码
+
 ```
 
 通常baseUrl在开发环境的和生产环境的路径是不一样的，所以可以根据当前是开发环境还是生产环境做判断，应用不同的基础路径。这里要写在一个配置文件里：
@@ -1657,7 +1657,7 @@ export default {
         proApiBaseUrl: '/api/xxx',
     },
 };
-复制代码
+
 ```
 
 在上面的文件中引入这个配置：
@@ -1665,7 +1665,7 @@ export default {
 ```typescript
 import { api: { devApiBaseUrl, proApiBaseUrl } } from '@/config';
 const apiBaseUrl = env.NODE_ENV === 'production' ? proApiBaseUrl : devApiBaseUrl;
-复制代码
+
 ```
 
 之后就可以将apiBaseUrl作为默认值传入HttpRequest的参数：
@@ -1675,7 +1675,7 @@ class HttpRequest {
   constructor(public baseUrl: string = apiBaseUrl) { 
     this.baseUrl = baseUrl;
   }
-复制代码
+
 ```
 
 接下来可以完善一下拦截器类，在类中interceptors方法内添加请求拦截器和响应拦截器，实现对所有接口请求的统一处理：
@@ -1704,7 +1704,7 @@ private interceptors(instance: AxiosInstance, url?: string) {
       return Promise.reject(error)
     })
   }
-复制代码
+
 ```
 
 到这里封装的就差不多了，一般服务端会将状态码、提示信息和数据封装在一起，然后作为数据返回，所以所有请求返回的数据格式都是一样的，所以就可以定义一个接口来指定返回的数据结构，可以定义一个接口：
@@ -1715,7 +1715,7 @@ export interface ResponseData {
   data?: any
   msg: string
 }
-复制代码
+
 ```
 
 接下来看看使用TypeScript封装的Axios该如何使用。可以先定义一个请求实例：
@@ -1724,7 +1724,7 @@ export interface ResponseData {
 import HttpRequest from '@/utils/axios'
 export * from '@/utils/axios'
 export default new HttpRequest()
-复制代码
+
 ```
 
 这里把请求类导入进来，默认导出这个类的实例。之后创建一个登陆接口请求方法：
@@ -1745,7 +1745,7 @@ export const loginReq = (data: ILogin): AxiosPromise<ResponseData> => {
     method: 'POST'
   })
 }
-复制代码
+
 ```
 
 这里封装登录请求方法loginReq，他的参数必须是我们定义的ILogin接口的类型。这个方法返回一个类型为`AxiosPromise`的Promise，AxiosPromise是axios声明文件内置的类型，可以传入一个泛型变量参数，用于指定返回的结果中data字段的类型。 
@@ -1762,7 +1762,7 @@ const Home: FC = () => {
   	})	
   }  
 }
-复制代码
+
 ```
 
 通过这种方式，当我们调用loginReq接口时，就会提示我们，参数的类型是ILogin，需要传入几个参数。这样编写代码的体验就会好很多。
@@ -1776,7 +1776,7 @@ const Home: FC = () => {
 ```typescript
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-复制代码
+
 ```
 
 这是一种面向未来的导入方式，如果想在项目中使用以下导入方式：
@@ -1784,7 +1784,7 @@ import * as ReactDOM from 'react-dom'
 ```typescript
 import React from "react";
 import ReactDOM from "react-dom";
-复制代码
+
 ```
 
 就需要在tsconfig.json配置文件中进行如下配置：
@@ -1794,7 +1794,7 @@ import ReactDOM from "react-dom";
     // 允许默认从没有默认导出的模块导入。
     "allowSyntheticDefaultImports": true,
 }
-复制代码
+
 ```
 
 ### 2. Types or Interfaces？
@@ -1824,7 +1824,7 @@ type Animal = {
 type Animal = {
   color: string
 }
-复制代码
+
 ```
 
 type对于联合类型是很有用的，比如：type Type = TypeA | TypeB。而interface更适合声明字典类行，然后定义或者扩展它。
@@ -1860,7 +1860,7 @@ export const AppRoutes: RouteType[] = [
     }
 ]
 
-复制代码
+
 ```
 
 下面是懒加载类型和lazy方法在声明文件中的定义：
@@ -1873,7 +1873,7 @@ type LazyExoticComponent<T extends ComponentType<any>> = ExoticComponent<Compone
 function lazy<T extends ComponentType<any>>(
 factory: () => Promise<{ default: T }>
 ): LazyExoticComponent<T>;
-复制代码
+
 ```
 
 ### 4. 类型断言
@@ -1890,7 +1890,7 @@ const getLength = (target: string | number): number => {
     return target.toString().length;
   }
 };
-复制代码
+
 ```
 
 当TypeScript不确定一个联合类型的变量到底是哪个类型时，就只能访问此联合类型的所有类型里共有的属性或方法，所以现在加了对参数target和返回值的类型定义之后就会报错。这时就可以使用断言，将target的类型断言成string类型：
@@ -1903,7 +1903,7 @@ const getStrLength = (target: string | number): number => {
     return target.toString().length;
   }
 };
-复制代码
+
 ```
 
 需要注意，类型断言并不是类型转换，断言成一个联合类型中不存在的类型是不允许的。 

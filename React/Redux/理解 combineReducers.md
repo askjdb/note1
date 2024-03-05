@@ -3,6 +3,8 @@
 这个行为让我非常迷惑，排查了很久， 一度找不到下手点。代码如下：
 
 ```
+import { combineReducers } from 'redux'
+
 APP.js
 const rootReducer = combineReducers({
   RudecerA,
@@ -21,7 +23,7 @@ export default function App(props) {
     </Provider>
   );
 }
-复制代码
+
 reducerB.js
 export function ReducerB(
   state = initState,
@@ -36,7 +38,6 @@ export function ReducerB(
     	  return initState;
    }
 }
-复制代码
 ```
 
 ### 解决办法
@@ -57,7 +58,7 @@ export function ReducerB(
 export function combineReducers<S>(
   reducers: ReducersMapObject<S, any>
 ): Reducer<CombinedState<S>>
-复制代码
+
 ```
 
 通过查看源码，发现 combineRudecer 主要做了以下几件事：

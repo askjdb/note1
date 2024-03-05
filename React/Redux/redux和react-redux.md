@@ -80,7 +80,7 @@
         }
     }
     
-复制代码
+
 ```
 
 以上是一个redux使用的小案例，里面包含了组件如何发送action修改store以及如何从store中获取数据。通过这个案例你应该明白了代码中如何在组件中使用redux管理数据，总结就是一下几点：
@@ -119,7 +119,7 @@ UI组件
     <Provider store={store}>
        <App />
     </Provider>
-复制代码
+
 ```
 
 - connect：provider传入store，所有子组件都能拿到state，那具体怎么拿呢？就需要用到connect，它用于包装 UI 组件生成容器组件。connect包裹后生成了一个容器组件，connect方法接受两个参数：mapStateToProps和mapDispatchToProps。它们定义了 UI 组件的业务逻辑。前者负责输入逻辑，即将state映射到 UI 组件的参数（props），后者负责输出逻辑，即将用户对 UI 组件的操作映射成 Actio,此时就可以与store交互了。
@@ -130,7 +130,7 @@ import { connect } from 'react-redux'
     mapStateToprops,
     mapDispatchToProps
   )(OurComponent)
-复制代码
+
 ```
 
 - mapStateToProps(): 它是一个函数，建立一个从（外部的）state对象到（UI 组件的）props对象的映射关系,把store的state挂载到组件的props上。mapStateToProps执行后应该返回一个对象，里面的每一个键值对就是一个映射。
@@ -141,7 +141,7 @@ import { connect } from 'react-redux'
         todos: "todo value"
       }
     }
-复制代码
+
 ```
 
 - mapDispatchToProps(): mapDispatchToProps是connect函数的第二个参数，用来建立 UI 组件的参数到store.dispatch方法的映射,把dispatch触发action的函数挂载到props上。它定义了哪些用户的操作应该当作 Action，传给 Store。它可以是一个函数，也可以是一个对象。
@@ -161,7 +161,7 @@ const mapDispatchToProps = (
     }
   };
 }
-复制代码
+
 ```
 
 因此，react-redux通过provider组件做到了store的统一管理，并利用connect包裹组件生成容器组件是的组件与store打通数据流，这样一来就不需要在每一个组件中引入store，并监听store变化，使用更加方便

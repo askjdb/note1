@@ -13,8 +13,7 @@
 > 对象的类属性（class attribute）是一个字符串，用以表示对象的类型信息。ES3和ES5都没有提供设置这个属性的方法，并只有一种间接的方法可以查询到它。默认的toString方法（继承自Object.prototype）返回了如下格式的字符串：[object *class*] 因此，想要获得对象的类，可以调用对象的toString方法，然后提取已返回字符串的第8个到倒数第2个位置之间的字符。
 
 ```js
-js
-复制代码Object.prototype.toString.call(target).slice(8, -1);
+Object.prototype.toString.call(target).slice(8, -1);
 ```
 
 综上，`[[Class]]`是一个字符串值，表明了该对象的类型。他是一个内部属性，所有的对象(原生对象和宿主对象)都拥有该属性，且不能被任何人修改。在规范中，`[[Class]]`是这么定义的：**内部属性 描述**。

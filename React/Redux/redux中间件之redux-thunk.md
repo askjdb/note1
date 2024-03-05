@@ -54,7 +54,6 @@ const thunk = createThunkMiddleware();
 thunk.withExtraArgument = createThunkMiddleware;
 
 export default thunk;
-复制代码
 ```
 
 redux-thunk中间件`export default`的就是`createThunkMiddleware()`过的thunk，再看 `createThunkMiddleware`这个函数，返回的是一个柯里化过的函数。我们再翻译成ES5的代码容易看一点，
@@ -73,7 +72,6 @@ function createThunkMiddleware(extraArgument) {
         }
     }
 }
-复制代码
 ```
 
 这么一看，就可以看出来redux-thunk最重要的思想，就是可以接受一个返回函数的action creator。如果这个action creator 返回的是一个函数，就执行它，如果不是，就按照原来的next(action)执行。
